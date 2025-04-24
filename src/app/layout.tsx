@@ -5,6 +5,7 @@ import "./globals.css"
 import "./rtl.css"
 import { LanguageProvider } from "@/contexts/language-context"
 import { RtlProvider } from "@/components/rtl-provider"
+import { Toaster } from "@/components/ui/toaster"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -23,6 +24,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <LanguageProvider>
           <RtlProvider>{children}</RtlProvider>
+          <Toaster />
         </LanguageProvider>
       </body>
     </html>

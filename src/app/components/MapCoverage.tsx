@@ -7,41 +7,32 @@ import {
   Popup,
   useMap,
 } from "react-leaflet";
-import L, { latLng, LatLng } from "leaflet";
+import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { translations } from "@/translations"
 import { useLanguage } from "@/contexts/language-context";
 
-
 export default function MapCoverage() {
-  const mapRef = useRef<L.Map | null>(null);
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
-  const { language, isRtl } = useLanguage()
+  const { language } = useLanguage()
   const t = translations[language]
+
+  useEffect(() => {
+    // Fix Leaflet already initialized error
+    const existingMap = document.querySelector(".leaflet-container");
+    if (existingMap && (existingMap as any)._leaflet_id) {
+      (existingMap as any)._leaflet_id = null;
+    }
+  }, []);
+
   const truckLocations = [
     { city: t.cities.agadir, position: [30.4278, -9.5981], type: "fruits", company: "FreshAgri" },
     { city: t.cities.casablanca, position: [33.5731, -7.5898], type: "fish", company: "OceanCatch" },
-    { city: t.cities.casablanca, position: [33.5741, -7.5892], type: "fruits", company: "FreshAgri" },
     { city: t.cities.safi, position: [32.2994, -9.2372], type: "fish", company: "SeaKing" },
     { city: t.cities.tanger, position: [35.7595, -5.8339], type: "fruits", company: "NorthFruits" },
   ];
-  
-  const groupedCities = truckLocations.reduce((acc, truck) => {
-    if (!acc[truck.city]) acc[truck.city] = [];
-    acc[truck.city].push(truck);
-    return acc;
-  }, {} as Record<string, typeof truckLocations>);
-  
-  function FlyToCity({ position }: { position: [number, number] }) {
-    const map = useMap();
-    useEffect(() => {
-      map.setView(position, 10, { animate: true });
-    }, [position]);
-    return null;
-  }
-  
   const uniqueCityMarkers = Object.values(
     truckLocations.reduce((acc, truck) => {
       if (!acc[truck.city]) {
@@ -55,24 +46,36 @@ export default function MapCoverage() {
       return acc;
     }, {} as Record<string, { city: string; position: [number, number]; companies: Set<string> }>)
   );
+  const groupedCities = truckLocations.reduce((acc, truck) => {
+    if (!acc[truck.city]) acc[truck.city] = [];
+    acc[truck.city].push(truck);
+    return acc;
+  }, {} as Record<string, typeof truckLocations>);
+
+  function FlyToCity({ position }: { position: [number, number] }) {
+    const map = useMap();
+    useEffect(() => {
+      map.flyTo(position, 10);
+    }, [position]);
+    return null;
+  }
+
   const cityTrucks = selectedCity ? groupedCities[selectedCity] : [];
 
   return (
     <div className="w-full h-[700px] flex flex-col gap-2 rounded-xl overflow-hidden shadow-lg mb-8 z-0">
-        <div className="mapcontainer h-[90%] w-full relative z-0">
+      <div className="mapcontainer h-[90%] w-full relative z-0">
         <MapContainer
-        center={[32.5, -6.5]}
-        zoom={6}
-        scrollWheelZoom={true}
-        className="w-full h-full z-0"
-        whenCreated={(mapInstance) => (mapRef.current = mapInstance)}
-      >
-        <TileLayer
-          attribution='&copy; OpenStreetMap contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-
-        {uniqueCityMarkers.map(({ city, position, companies }, i) => (
+          center={[32.5, -6.5]}
+          zoom={6}
+          scrollWheelZoom={true}
+          className="w-full h-full z-0"
+        >
+          <TileLayer
+            attribution='&copy; OpenStreetMap contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          {uniqueCityMarkers.map(({ city, position, companies }, i) => (
           <Marker
             key={i}
             position={position}
@@ -95,13 +98,13 @@ export default function MapCoverage() {
             </Popup>
           </Marker>
         ))}
-        { selectedCity && (
-          <FlyToCity position={cityTrucks[0].position as [number, number]} />)
-        }
-      </MapContainer>
-        </div>
 
-      {/* City badges */}
+          {selectedCity && (
+            <FlyToCity position={cityTrucks[0].position as [number, number]} />
+          )}
+        </MapContainer>
+      </div>
+
       <div className="flex flex-wrap gap-3 justify-center px-4 py-3">
         {Object.entries(groupedCities).map(([city]) => (
           <Badge
