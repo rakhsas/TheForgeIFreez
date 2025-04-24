@@ -7,6 +7,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Truck, MapPin, Leaf, Snowflake, Clock, BarChart3 } from "lucide-react"
+import dynamic from "next/dynamic";
+const MapCoverage = dynamic(() => import("@/app/components/MapCoverage"), { ssr: false });
 
 export default function Home() {
   return (
@@ -283,6 +285,7 @@ export default function Home() {
             </div>
           </div>
         </section>
+
 
         {/* Témoignages */}
         <section id="temoignages" className="bg-slate-50 py-12 md:py-24">
