@@ -39,12 +39,19 @@ export default function Home() {
             </Link>
           </nav>
           <div className="flex items-center gap-2">
-            <LanguageSwitcher />
-            <Button variant="outline" className="mr-2 hidden md:inline-flex">
-              {t.nav.login}
-            </Button>
-            <Button className="bg-[#6BBF59] hover:bg-[#6BBF59]/90">{t.nav.signup}</Button>
-          </div>
+  <LanguageSwitcher />
+  
+  <Link href="/login" className="mr-2 hidden md:inline-flex">
+    <Button variant="outline">{t.nav.login}</Button>
+  </Link>
+
+  <Link href="/signup">
+    <Button className="bg-[#6BBF59] hover:bg-[#6BBF59]/90">
+      {t.nav.signup}
+    </Button>
+  </Link>
+</div>
+
         </div>
       </header>
       <main className="flex-1">

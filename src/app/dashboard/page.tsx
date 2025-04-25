@@ -14,31 +14,41 @@ export default function DashboardPage() {
 
   const handleFilter = (filters: any) => {
     let filtered = [...offers]
-
+    console.log("filters", filters)
     if (filters.date) {
       filtered = filtered.filter((offer) =>
         offer.date.includes(
           filters.date.toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric" }),
         ),
       )
+      console.log("Filtered by date:", filtered)
     }
-
+    
     if (filters.departure) {
       filtered = filtered.filter((offer) => offer.departure.toLowerCase().includes(filters.departure.toLowerCase()))
+      console.log("Filtered by departure:", filtered)
     }
-
+    
     if (filters.arrival) {
       filtered = filtered.filter((offer) => offer.arrival.toLowerCase().includes(filters.arrival.toLowerCase()))
+      console.log("Filtered by arrival:", filtered)
     }
-
+    
     if (filters.productType) {
+      console.log("filters.productType", filters.productType)
+      console.log("offer.productType", offers.map((offer) => offer.productType))
       filtered = filtered.filter((offer) => offer.productType === filters.productType)
+      console.log("Filtered by type:", filtered)
+    
     }
-
+    
     if (filters.priceRange) {
+      console.log("filters.priceRange", filters.priceRange)
+      console.log("offer.pricePerKg", offers.map((offer) => offer.pricePerKg))
       filtered = filtered.filter(
         (offer) => offer.pricePerKg >= filters.priceRange[0] && offer.pricePerKg <= filters.priceRange[1],
       )
+      console.log("Filtered by range:", filtered)
     }
 
     setFilteredOffers(filtered)
@@ -49,6 +59,14 @@ export default function DashboardPage() {
     toast({
       title: "Réservation confirmée",
       description: "Votre réservation a été enregistrée avec succès.",
+    })
+  }
+
+  const handleCancel = (id: string) => {
+    setReservedOffers(reservedOffers.filter((offerId) => offerId !== id))
+    toast({
+      title: "Réservation annulée",
+      description: "Votre réservation a été annulée avec succès.",
     })
   }
 
@@ -71,6 +89,7 @@ export default function DashboardPage() {
               {...offer}
               isReserved={reservedOffers.includes(offer.id)}
               onReserve={() => handleReserve(offer.id)}
+              onCancel={() => handleCancel(offer.id)}
             />
           ))
         ) : (

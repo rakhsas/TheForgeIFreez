@@ -93,7 +93,7 @@ export function TransportOfferCard({
 
           <div className="flex flex-col items-end gap-2">
             <div className="text-2xl font-bold text-[#234E70]">
-              {pricePerKg} €<span className="text-sm font-normal">/kg</span>
+              {pricePerKg} MAD<span className="text-sm font-normal">/kg</span>
             </div>
             <div className="flex items-center gap-1 text-sm text-gray-600">
               <Weight className="h-4 w-4" />

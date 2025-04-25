@@ -71,7 +71,7 @@ export function CreateOfferForm({ onSubmit }: CreateOfferFormProps) {
                 <MapPin className="absolute left-2 top-2.5 h-4 w-4 text-gray-400" />
                 <Input
                   id="departure"
-                  placeholder="Ex: Paris"
+                  placeholder="Ex: Fes"
                   value={departure}
                   onChange={(e) => setDeparture(e.target.value)}
                   className="pl-8"
@@ -86,7 +86,7 @@ export function CreateOfferForm({ onSubmit }: CreateOfferFormProps) {
                 <MapPin className="absolute left-2 top-2.5 h-4 w-4 text-gray-400" />
                 <Input
                   id="arrival"
-                  placeholder="Ex: Lyon"
+                  placeholder="Ex: Oujda"
                   value={arrival}
                   onChange={(e) => setArrival(e.target.value)}
                   className="pl-8"

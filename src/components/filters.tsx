@@ -99,10 +99,10 @@ export function Filters({ onFilter }: { onFilter: (filters: any) => void }) {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">Tous les produits</SelectItem>
-                <SelectItem value="fruits">Fruits et légumes</SelectItem>
-                <SelectItem value="fish">Poissons et fruits de mer</SelectItem>
-                <SelectItem value="dairy">Produits laitiers</SelectItem>
-                <SelectItem value="meat">Viandes</SelectItem>
+                <SelectItem value="Fruits et légumes">Fruits et légumes</SelectItem>
+                <SelectItem value="Poissons et fruits de mer">Poissons et fruits de mer</SelectItem>
+                <SelectItem value="Produits laitiers">Produits laitiers</SelectItem>
+                <SelectItem value="Viandes">Viandes</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -111,22 +111,22 @@ export function Filters({ onFilter }: { onFilter: (filters: any) => void }) {
 
       <div className="space-y-2 mb-6">
         <div className="flex items-center justify-between">
-          <Label htmlFor="price-range">Prix au kg (€)</Label>
+          <Label htmlFor="price-range">Prix au kg (MAD)</Label>
           <span className="text-sm text-gray-500">
-            {priceRange[0]}€ - {priceRange[1]}€
+            {priceRange[0]}MAD - {priceRange[1]}MAD
           </span>
         </div>
-        <div className="flex items-center gap-2">
-          <Euro className="h-4 w-4 text-gray-400" />
+        <div className="flex items-center gap-6">
+          <span className="h-4 w-4 text-gray-400">MAD</span>
           <Slider
             id="price-range"
-            defaultValue={[0, 10]}
-            max={10}
+            defaultValue={[0, 20]}
+            max={100}
             step={0.5}
             value={priceRange}
             onValueChange={setPriceRange}
-            className="flex-1"
-          />
+            className="flex-1 mt-1"
+          />  
         </div>
       </div>
 

@@ -8,10 +8,12 @@ import { useToast } from "@/hooks/use-toast"
 
 export default function ReservationsPage() {
   // Dans une application réelle, ces données viendraient d'une API
-  const [reservedOffers] = useState(mockOffers.slice(0, 3))
+  const [reservedOffers, setReservedOffers] = useState(mockOffers.slice(0, 3))
   const { toast } = useToast()
 
   const handleCancelReservation = (id: string) => {
+    setReservedOffers(prev => prev.filter((offer) => offer.id !== id))
+  
     toast({
       title: "Réservation annulée",
       description: "Votre réservation a été annulée avec succès.",
